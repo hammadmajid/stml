@@ -1,0 +1,9 @@
+doc {
+  meta {
+    title "Simple example document"
+  }
+
+  p {
+    text "Hello world"
+  }
+}
