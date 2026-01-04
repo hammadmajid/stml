@@ -124,7 +124,7 @@ ul {
 }
 ```
 
-For `olist` the renderer should automaically increment.
+For `ol` the renderer should automatically increment.
 
 ---
 
