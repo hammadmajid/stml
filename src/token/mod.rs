@@ -1,4 +1,5 @@
 pub mod scanner;
+mod scanner_tests;
 
 #[derive(Debug)]
 pub enum Token {
