@@ -32,4 +32,9 @@ fn main() {
     for token in tokens {
         println!("{:?}", token);
     }
+
+    fs::write(&output_file, "").unwrap_or_else(|_| {
+        eprintln!("Output file '{}' cannot be written.", output_file);
+        exit(64);
+    });
 }
