@@ -1,9 +1,7 @@
 doc {
   meta {
-    title "Simple example document"
+    title "Basic example 01"
   }
 
-  p {
-    text "Hello world"
-  }
+  p "Hello world"
 }
