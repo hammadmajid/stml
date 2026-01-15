@@ -1,7 +1,7 @@
 mod token;
 mod utils;
 
-use crate::token::scanner::Scanner;
+use crate::token::scanner::{Scanner, ScannerError};
 use crate::utils::sysexits::{ExitCode, exit};
 use std::env;
 use std::fs;
@@ -27,11 +27,20 @@ fn main() {
         exit(ExitCode::NoInput);
     });
 
-    let mut scanner = Scanner::new(input_content);
-    let tokens = scanner.tokenize().unwrap_or_else(|err| {
-        eprintln!("Error: {:?}", err);
-        exit(ExitCode::DataErr);
-    });
+    let scanner = Scanner::new();
+    let tokens = scanner
+        .tokenize(input_content.as_str())
+        .unwrap_or_else(|err| {
+            match err {
+                ScannerError::InvalidToken(token) => {
+                    eprintln!("Invalid token: {}", token);
+                }
+                ScannerError::UnterminatedToken(token) => {
+                    eprintln!("Unterminated token: {}", token);
+                }
+            }
+            exit(ExitCode::DataErr);
+        });
 
     for token in tokens {
         println!("{:?}", token);
