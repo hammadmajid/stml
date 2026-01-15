@@ -35,8 +35,8 @@ pub enum Token {
     Maybe,
 
     // Literals
-    Identifier,
-    StringLiteral,
+    Identifier(String),
+    StringLiteral(String),
 
     // Multi-character tokens
     TripleQuote,
