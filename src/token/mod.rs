@@ -38,9 +38,6 @@ pub enum Token {
     Identifier(String),
     StringLiteral(String),
 
-    // Multi-character tokens
-    TripleQuote,
-
     // Single-character tokens
     LeftBrace,
     RightBrace,
