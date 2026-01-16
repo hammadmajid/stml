@@ -19,14 +19,11 @@ pub enum Token {
     Ref,
 
     // Resource and linking keywords
-    Use,
-    As,
     To,
+    Src,
 
     // Media related keywords
-    File,
     Image,
-    Src,
     Alt,
     Fallback,
 

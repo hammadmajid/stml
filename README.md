@@ -90,24 +90,6 @@ If the referenced section does not exist, the document is invalid.
 
 ---
 
-### Cross-file references
-
-Files must be declared before use.
-
-```
-use "./other.stml" as other
-```
-
-Reference syntax:
-
-```
-ref file:other.section:#usage "usage section"
-```
-
-If the file or section is missing, invalid.
-
----
-
 ### Lists
 
 Lists require explicit items.

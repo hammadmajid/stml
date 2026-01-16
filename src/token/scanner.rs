@@ -114,9 +114,6 @@ impl Scanner {
             "li" => Ok(Token::Li),
             "ol" => Ok(Token::Ol),
             "ref" => Ok(Token::Ref),
-            "use" => Ok(Token::Use),
-            "as" => Ok(Token::As),
-            "file" => Ok(Token::File),
             "meta" => Ok(Token::Meta),
             _ => Ok(Token::Identifier(value)),
         }

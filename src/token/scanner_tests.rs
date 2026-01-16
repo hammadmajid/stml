@@ -110,29 +110,6 @@ mod tests {
     }
 
     #[test]
-    fn scans_use_statement() {
-        let scanner = Scanner::new();
-        let tokens = scanner.tokenize("use \"./other.stml\" as other").unwrap();
-
-        assert_eq!(tokens.len(), 4);
-        assert!(matches!(tokens[0], Token::Use));
-        assert!(matches!(&tokens[1], Token::StringLiteral(s) if s == "./other.stml"));
-        assert!(matches!(tokens[2], Token::As));
-        assert!(matches!(&tokens[3], Token::Identifier(s) if s == "other"));
-    }
-
-    #[test]
-    fn scans_cross_file_reference() {
-        let scanner = Scanner::new();
-        let tokens = scanner.tokenize("ref file:other.section:#usage").unwrap();
-
-        assert!(tokens.len() >= 6);
-        assert!(matches!(tokens[0], Token::Ref));
-        assert!(matches!(tokens[1], Token::File));
-        assert!(matches!(tokens[2], Token::Colon));
-    }
-
-    #[test]
     fn scans_image_block() {
         let scanner = Scanner::new();
         let tokens = scanner
@@ -212,7 +189,7 @@ mod tests {
 
         assert_eq!(tokens1.len(), tokens2.len());
     }
-    
+
     #[test]
     fn string_with_spaces() {
         let scanner = Scanner::new();
