@@ -75,7 +75,7 @@ impl Scanner {
                 value.push(*ch);
                 chars.next();
             } else {
-                return Err(ScannerError::InvalidToken('\''));
+                break;
             }
         }
 
