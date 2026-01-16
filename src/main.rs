@@ -43,7 +43,11 @@ fn main() {
         });
 
     for token in tokens {
-        println!("{:?}", token);
+        match token {
+            token::Token::Identifier(identifier) => println!("Identifier({identifier})"),
+            token::Token::StringLiteral(string) => println!("String({string})"),
+            _ => println!("{:?}", token),
+        }
     }
 
     fs::write(&output_file, "").unwrap_or_else(|_| {
