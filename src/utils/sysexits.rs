@@ -1,5 +1,6 @@
 #[repr(i32)]
 #[derive(Debug, Copy, Clone)]
+#[allow(dead_code)]
 pub enum ExitCode {
     Usage = 64,     // you ran it wrong
     DataErr = 65,   // input is cursed
