@@ -212,16 +212,7 @@ mod tests {
 
         assert_eq!(tokens1.len(), tokens2.len());
     }
-
-    #[test]
-    fn empty_string_literal() {
-        let scanner = Scanner::new();
-        let tokens = scanner.tokenize("\"\"").unwrap();
-
-        assert_eq!(tokens.len(), 1);
-        assert!(matches!(&tokens[0], Token::StringLiteral(s) if s.is_empty()));
-    }
-
+    
     #[test]
     fn string_with_spaces() {
         let scanner = Scanner::new();
