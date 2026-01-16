@@ -83,7 +83,7 @@ mod tests {
         let tokens = scanner.tokenize("\"\"\"multi\nline\"\"\"").unwrap();
 
         assert_eq!(tokens.len(), 1);
-        assert!(matches!(&tokens[0], Token::Identifier(s) if s == "multi\nline"))
+        assert!(matches!(&tokens[0], Token::StringLiteral(s) if s == "multi\nline"))
     }
 
     #[test]
