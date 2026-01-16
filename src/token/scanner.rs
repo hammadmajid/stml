@@ -8,7 +8,7 @@ pub enum ScannerError {
     UnterminatedToken(char),
 }
 
-pub struct Scanner {}
+pub struct Scanner;
 
 impl Scanner {
     pub fn new() -> Scanner {
@@ -49,15 +49,34 @@ impl Scanner {
 
 impl Scanner {
     fn consume_string_literal(chars: &mut Peekable<Chars>) -> Result<Token, ScannerError> {
+        let mut quote_len = 1;
+
+        while matches!(chars.peek(), Some('"')) && quote_len < 3 {
+            chars.next();
+            quote_len += 1;
+        }
+
+        let terminator = quote_len;
         let mut value = String::new();
+        let mut run = 0;
 
         while let Some(ch) = chars.peek() {
             if *ch == '"' {
-                chars.next(); // discard the closing quote
-                return Ok(Token::StringLiteral(value));
+                chars.next();
+                run += 1;
+                if run == terminator {
+                    return Ok(Token::StringLiteral(value));
+                }
+            } else {
+                if run > 0 {
+                    for _ in 0..run {
+                        value.push('"');
+                    }
+                    run = 0;
+                }
+                value.push(*ch);
+                chars.next();
             }
-            value.push(*ch);
-            chars.next();
         }
 
         Err(ScannerError::UnterminatedToken('"'))
