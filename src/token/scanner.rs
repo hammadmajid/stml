@@ -49,33 +49,28 @@ impl Scanner {
 
 impl Scanner {
     fn consume_string_literal(chars: &mut Peekable<Chars>) -> Result<Token, ScannerError> {
-        let mut quote_len = 1;
-
-        while matches!(chars.peek(), Some('"')) && quote_len < 3 {
+        // count opening quotes (1 to 3)
+        let mut quotes = 1;
+        while quotes < 3 && matches!(chars.peek(), Some('"')) {
             chars.next();
-            quote_len += 1;
+            quotes += 1;
         }
 
-        let terminator = quote_len;
         let mut value = String::new();
-        let mut run = 0;
+        let mut closing = 0;
 
-        while let Some(ch) = chars.peek() {
-            if *ch == '"' {
-                chars.next();
-                run += 1;
-                if run == terminator {
+        while let Some(ch) = chars.next() {
+            if ch == '"' {
+                closing += 1;
+                if closing == quotes {
                     return Ok(Token::StringLiteral(value));
                 }
             } else {
-                if run > 0 {
-                    for _ in 0..run {
-                        value.push('"');
-                    }
-                    run = 0;
+                if closing > 0 {
+                    value.extend(std::iter::repeat('"').take(closing));
+                    closing = 0;
                 }
-                value.push(*ch);
-                chars.next();
+                value.push(ch);
             }
         }
 
