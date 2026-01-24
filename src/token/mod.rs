@@ -41,4 +41,7 @@ pub enum Token {
     Hash,
     Dot,
     Colon,
+    
+    // End of file
+    EOF,
 }

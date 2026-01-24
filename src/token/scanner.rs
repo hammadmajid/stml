@@ -43,6 +43,8 @@ impl Scanner {
             }
         }
 
+        tokens.push(Token::EOF);
+
         Ok(tokens)
     }
 }

@@ -1,13 +1,14 @@
 #[cfg(test)]
 mod tests {
-    use crate::token::Token;
     use crate::token::scanner::{Scanner, ScannerError};
+    use crate::token::Token;
 
     #[test]
     fn empty_input_produces_no_tokens() {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("").unwrap();
-        assert!(tokens.is_empty());
+        assert_eq!(tokens.len(), 1);
+        assert!(matches!(tokens[0], Token::EOF));
     }
 
     #[test]
@@ -15,8 +16,9 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("doc").unwrap();
 
-        assert_eq!(tokens.len(), 1);
+        assert_eq!(tokens.len(), 2);
         matches!(tokens[0], Token::Doc);
+        matches!(tokens[1], Token::EOF);
     }
 
     #[test]
@@ -24,9 +26,10 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("{ }").unwrap();
 
-        assert_eq!(tokens.len(), 2);
+        assert_eq!(tokens.len(), 3);
         matches!(tokens[0], Token::LeftBrace);
         matches!(tokens[1], Token::RightBrace);
+        matches!(tokens[2], Token::EOF);
     }
 
     #[test]
@@ -34,7 +37,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("\"hello\"").unwrap();
 
-        assert_eq!(tokens.len(), 1);
+        assert_eq!(tokens.len(), 2);
         assert!(matches!(&tokens[0], Token::StringLiteral(s) if s == "hello"));
     }
 
@@ -59,7 +62,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("section #intro { }").unwrap();
 
-        assert_eq!(tokens.len(), 5);
+        assert_eq!(tokens.len(), 6);
         assert!(matches!(tokens[0], Token::Section));
         assert!(matches!(tokens[1], Token::Hash));
         assert!(matches!(&tokens[2], Token::Identifier(s) if s == "intro"));
@@ -72,7 +75,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("p \"Single line paragraph.\"").unwrap();
 
-        assert_eq!(tokens.len(), 2);
+        assert_eq!(tokens.len(), 3);
         assert!(matches!(tokens[0], Token::P));
         assert!(matches!(&tokens[1], Token::StringLiteral(s) if s == "Single line paragraph."));
     }
@@ -82,7 +85,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("\"\"\"multi\nline\"\"\"").unwrap();
 
-        assert_eq!(tokens.len(), 1);
+        assert_eq!(tokens.len(), 2);
         assert!(matches!(&tokens[0], Token::StringLiteral(s) if s == "multi\nline"))
     }
 
@@ -91,7 +94,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("ol ul li").unwrap();
 
-        assert_eq!(tokens.len(), 3);
+        assert_eq!(tokens.len(), 4);
         assert!(matches!(tokens[0], Token::Ol));
         assert!(matches!(tokens[1], Token::Ul));
         assert!(matches!(tokens[2], Token::Li));
@@ -102,7 +105,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("ref section:#intro").unwrap();
 
-        assert!(tokens.len() >= 4);
+        assert!(tokens.len() >= 5);
         assert!(matches!(tokens[0], Token::Ref));
         assert!(matches!(tokens[1], Token::Section));
         assert!(matches!(tokens[2], Token::Colon));
@@ -139,7 +142,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("maybe image { }").unwrap();
 
-        assert_eq!(tokens.len(), 4);
+        assert_eq!(tokens.len(), 5);
         assert!(matches!(tokens[0], Token::Maybe));
         assert!(matches!(tokens[1], Token::Image));
     }
@@ -154,7 +157,7 @@ mod tests {
         }"#;
         let tokens = scanner.tokenize(input).unwrap();
 
-        assert_eq!(tokens.len(), 10);
+        assert_eq!(tokens.len(), 11);
         assert!(matches!(tokens[0], Token::Doc));
         assert!(matches!(tokens[1], Token::LeftBrace));
         assert!(matches!(tokens[2], Token::Section));
@@ -165,6 +168,7 @@ mod tests {
         assert!(matches!(&tokens[7], Token::StringLiteral(s) if s == "Hello world"));
         assert!(matches!(tokens[8], Token::RightBrace));
         assert!(matches!(tokens[9], Token::RightBrace));
+        assert!(matches!(tokens[10], Token::EOF));
     }
 
     #[test]
@@ -172,7 +176,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("{ } # . :").unwrap();
 
-        assert_eq!(tokens.len(), 5);
+        assert_eq!(tokens.len(), 6);
         assert!(matches!(tokens[0], Token::LeftBrace));
         assert!(matches!(tokens[1], Token::RightBrace));
         assert!(matches!(tokens[2], Token::Hash));
@@ -195,7 +199,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("\"hello world\"").unwrap();
 
-        assert_eq!(tokens.len(), 1);
+        assert_eq!(tokens.len(), 2);
         assert!(matches!(&tokens[0], Token::StringLiteral(s) if s == "hello world"));
     }
 
@@ -204,7 +208,7 @@ mod tests {
         let scanner = Scanner::new();
         let tokens = scanner.tokenize("{ { } }").unwrap();
 
-        assert_eq!(tokens.len(), 4);
+        assert_eq!(tokens.len(), 5);
         assert!(matches!(tokens[0], Token::LeftBrace));
         assert!(matches!(tokens[1], Token::LeftBrace));
         assert!(matches!(tokens[2], Token::RightBrace));
