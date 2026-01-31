@@ -118,9 +118,6 @@ Images with enforced failure handling. Images must declare a fallback. No fallba
 image {
   src "https://site/img.png"
   alt "diagram"
-  fallback {
-    p "Image failed to load."
-  }
 }
 ```
 
@@ -136,37 +133,6 @@ link {
   text "example"
 }
 ```
-
----
-
-### Null handling (non-optional blocks)
-
-Some blocks may explicitly allow absence. This is done with `maybe`.
-
-```
-maybe image {
-  src "https://site/img.png"
-  alt "optional image"
-  fallback {
-    p "No image."
-  }
-}
-```
-
-If `maybe` is not used, the renderer must treat failure as fatal.
-
----
-
-### Metadata
-
-```
-meta {
-  author "name"
-  date "2026-01-02"
-}
-```
-
-The renderer may do whatever with the metadata.
 
 ---
 
