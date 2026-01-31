@@ -1,6 +1,8 @@
+mod parser;
 mod token;
 mod utils;
 
+use crate::parser::{ParseError, Parser};
 use crate::token::scanner::{Scanner, ScannerError};
 use crate::utils::sysexits::{ExitCode, exit};
 use std::env;
@@ -42,13 +44,20 @@ fn main() {
             exit(ExitCode::DataErr);
         });
 
-    for token in tokens {
-        match token {
-            token::Token::Identifier(identifier) => println!("Identifier({identifier})"),
-            token::Token::StringLiteral(string) => println!("String({string})"),
-            _ => println!("{:?}", token),
+    let parser = Parser::new(tokens);
+    let ast = parser.parse().unwrap_or_else(|err| {
+        match err {
+            ParseError::UnexpectedEOF => {
+                eprintln!("Unexpected end of file");
+            }
+            ParseError::UnexpectedToken(token) => {
+                eprintln!("Unexpected token: {:?}", token);
+            }
         }
-    }
+        exit(ExitCode::DataErr);
+    });
+    
+    println!("{:?}", ast);
 
     fs::write(&output_file, "").unwrap_or_else(|_| {
         eprintln!("Output file '{}' cannot be written.", output_file);
