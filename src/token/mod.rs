@@ -1,7 +1,7 @@
 pub mod scanner;
 mod scanner_tests;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Token {
     // Structural keywords
     Doc,
