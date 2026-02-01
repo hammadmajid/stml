@@ -1,7 +1,3 @@
-doc {
-  meta {
-    title "Basic example 01"
-  }
-
+doc "Basic example 01" {
   p "Hello world"
 }
