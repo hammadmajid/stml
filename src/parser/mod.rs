@@ -1,7 +1,7 @@
 mod types;
 mod parser;
 
-use crate::token::Token;
+use crate::token::token::Token;
 
 pub struct Parser {
     tokens: Vec<Token>,

@@ -1,6 +1,6 @@
 use crate::parser::types::{Document, Section};
 use crate::parser::{ParseError, Parser};
-use crate::token::Token;
+use crate::token::token::Token;
 
 impl Parser {
     pub fn new(tokens: Vec<Token>) -> Self {

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use crate::token::scanner::{Scanner, ScannerError};
-    use crate::token::Token;
+    use crate::token::token::Token;
 
     #[test]
     fn empty_input_produces_no_tokens() {

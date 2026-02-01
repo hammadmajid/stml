@@ -1,4 +1,4 @@
-use crate::token::Token;
+use crate::token::token::Token;
 use std::iter::Peekable;
 use std::str::Chars;
 
