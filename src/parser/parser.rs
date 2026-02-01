@@ -1,6 +1,14 @@
 use crate::parser::types::{Document, Section};
-use crate::parser::{ParseError, Parser};
 use crate::token::token::Token;
+
+pub struct Parser {
+    tokens: Vec<Token>,
+}
+
+pub enum ParseError {
+    UnexpectedEOF,
+    UnexpectedToken(Token),
+}
 
 impl Parser {
     pub fn new(tokens: Vec<Token>) -> Self {

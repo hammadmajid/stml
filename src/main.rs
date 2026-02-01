@@ -2,7 +2,7 @@ mod parser;
 mod token;
 mod utils;
 
-use crate::parser::{ParseError, Parser};
+use crate::parser::parser::{ParseError, Parser};
 use crate::token::scanner::{Scanner, ScannerError};
 use crate::utils::sysexits::{ExitCode, exit};
 use std::env;
@@ -56,7 +56,7 @@ fn main() {
         }
         exit(ExitCode::DataErr);
     });
-    
+
     println!("{:?}", ast);
 
     fs::write(&output_file, "").unwrap_or_else(|_| {
